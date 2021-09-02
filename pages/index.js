@@ -1,4 +1,5 @@
 //importações internas
+import Link from 'next/link'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
@@ -16,8 +17,8 @@ import {Container,
 } from '@chakra-ui/react'
 
 //importações locais
-import { Logo } from './../components'
-import firebase from './../config/firebase'
+import { Logo } from '../components'
+import firebase from '../config/firebase'
 
 //yup faz as validações do formik
 const validationSchema = yup.object().shape({
@@ -36,8 +37,13 @@ export default function Home() {
     handleSubmit,
     isSubmitting
   } = useFormik({
-    onSubmit: (values, form) => {
-      console.log(values)
+    onSubmit: async (values, form) => {
+      try{
+        const user = await firebase.auth().signInWithEmailAndPassword(values.email, values.password)
+        await console.log(user)
+      }  catch (error) {
+        console.log(error)
+      }
     },
     validationSchema,
     initialValues: {
@@ -66,20 +72,13 @@ export default function Home() {
           {touched.password && <FormHelperText textColor="#e74c3c">{errors.password}</FormHelperText>}
         </FormControl>
 
-          <FormControl id="username" p={4} isRequired>
-            <InputGroup size="lg">
-              <InputLeftAddon children = "clocker.work/"/>
-              <Input type="username" value = {values.username} onChange = {handleChange} onBlur = {handleBlur}  />
-            </InputGroup>            
-            {touched.username && <FormHelperText textColor="#e74c3c">{errors.username}</FormHelperText>}
-          </FormControl>
-
-
         <Box p={4}>
           <Button colorScheme = "blue" width="100%"onClick={handleSubmit} isLoading = {isSubmitting}>Entrar</Button>
         </Box>
 
       </Box>
+
+      <Link href="/signup">Ainda não possui uma conta? Cadastre-se</Link>
 
 
     </Container>
