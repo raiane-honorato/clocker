@@ -17,17 +17,17 @@ import {Container,
 } from '@chakra-ui/react'
 
 //importações locais
-import { Logo } from '../components'
-import firebase from '../config/firebase'
+import { Logo } from '../../components'
+import firebase, { persistenceMode } from '../../config/firebase'
+import { useEffect } from 'react'
 
 //yup faz as validações do formik
 const validationSchema = yup.object().shape({
   email: yup.string().email("E-mail inválido").required("Preenchimento obrigatório"),
-  password: yup.string().required("Preenchimento obrigatório"),
-  username: yup.string().required("Preenchimento obrigatório")
+  password: yup.string().required("Preenchimento obrigatório")
 })
 
-export default function Home() {
+export const Login = () => {
   const {
     values,
     errors,
@@ -38,9 +38,10 @@ export default function Home() {
     isSubmitting
   } = useFormik({
     onSubmit: async (values, form) => {
+      firebase.auth().setPersistence(persistenceMode)
+
       try{
-        const user = await firebase.auth().createUserWithEmailAndPassword(values.email, values.password)
-        console.log("user")
+        const user = await firebase.auth().signInWithEmailAndPassword(values.email, values.password)
         console.log(user)
       }  catch (error) {
         console.log(error)
@@ -49,10 +50,11 @@ export default function Home() {
     validationSchema,
     initialValues: {
       email: '',
-      username: '',
       password:''
     }
   })
+
+
   return (
     <Container p={4} centerContent>
       <Logo />
@@ -73,22 +75,13 @@ export default function Home() {
           {touched.password && <FormHelperText textColor="#e74c3c">{errors.password}</FormHelperText>}
         </FormControl>
 
-          <FormControl id="username" p={4} isRequired>
-            <InputGroup size="lg">
-              <InputLeftAddon>clocker.work/</InputLeftAddon>
-              <Input type="username" value = {values.username} onChange = {handleChange} onBlur = {handleBlur}  />
-            </InputGroup>            
-            {touched.username && <FormHelperText textColor="#e74c3c">{errors.username}</FormHelperText>}
-          </FormControl>
-
-
         <Box p={4}>
           <Button colorScheme = "blue" width="100%"onClick={handleSubmit} isLoading = {isSubmitting}>Entrar</Button>
         </Box>
 
       </Box>
 
-      <Link href="/">Já possui uma conta? Acesse-se</Link>
+      <Link href="/signup">Ainda não possui uma conta? Cadastre-se</Link>
 
 
     </Container>
