@@ -18,7 +18,7 @@ import {Container,
 
 //importações locais
 import { Logo } from '../../components'
-import { firebaseClient, persistenceMode } from '../../config/firebase'
+import { firebaseClient, persistenceMode } from '../../config/firebase/client'
 import { useEffect } from 'react'
 
 //yup faz as validações do formik

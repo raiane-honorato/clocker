@@ -18,7 +18,7 @@ import {Container,
 
 //importações locais
 import { Logo } from '../components'
-import { firebaseClient }  from '../config/firebase'
+import { firebaseClient }  from '../config/firebase/client'
 
 //yup faz as validações do formik
 const validationSchema = yup.object().shape({

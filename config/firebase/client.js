@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app'
+import firebaseClient from 'firebase/compat/app'
 import 'firebase/compat/auth'
 
 const firebaseConfig = {
@@ -12,8 +12,10 @@ const firebaseConfig = {
 
   };
 
-  const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig)
+  const app = firebaseClient.apps.length ? 
+  firebaseClient.app() 
+  : firebaseClient.initializeApp(firebaseConfig)
 
-  export const persistenceMode = firebase.auth.Auth.Persistence.LOCAL
+  export const persistenceMode = firebaseClient.auth.Auth.Persistence.LOCAL
 
-  export default app
+  export { firebaseClient }
