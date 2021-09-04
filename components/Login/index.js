@@ -18,7 +18,7 @@ import {Container,
 
 //importações locais
 import { Logo } from '../../components'
-import firebase, { persistenceMode } from '../../config/firebase'
+import { firebaseClient, persistenceMode } from '../../config/firebase'
 import { useEffect } from 'react'
 
 //yup faz as validações do formik
@@ -38,10 +38,10 @@ export const Login = () => {
     isSubmitting
   } = useFormik({
     onSubmit: async (values, form) => {
-      firebase.auth().setPersistence(persistenceMode)
+      firebaseClient.auth().setPersistence(persistenceMode)
 
       try{
-        const user = await firebase.auth().signInWithEmailAndPassword(values.email, values.password)
+        const user = await firebaseClient.auth().signInWithEmailAndPassword(values.email, values.password)
         console.log(user)
       }  catch (error) {
         console.log(error)
