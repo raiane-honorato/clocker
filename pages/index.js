@@ -1,6 +1,7 @@
 import { Container, Spinner } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Login, Agenda } from "../components";
+
 import { firebaseClient } from '../config/firebase'
 
 export default function Home() {
